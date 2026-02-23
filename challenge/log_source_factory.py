@@ -1,7 +1,17 @@
-from file_log_source import FileLogSource
-from csv_log_source import CsvLogSource
+from .file_log_source import FileLogSource
+from .csv_log_source import CsvLogSource
 
-def get_log_source(filepath):
-    if filepath.lower().endswith(".csv"):
-        return CsvLogSource(filepath)
-    return FileLogSource(filepath)
+
+class LogSourceFactory:
+
+    @staticmethod
+    def create_log_source(source_type: str, **kwargs):
+
+        if source_type == "file":
+            return FileLogSource(kwargs.get("file_path"))
+
+        elif source_type == "csv":
+            return CsvLogSource(kwargs.get("file_path"))
+
+        else:
+            raise ValueError(f"Unknown source type: {source_type}")
